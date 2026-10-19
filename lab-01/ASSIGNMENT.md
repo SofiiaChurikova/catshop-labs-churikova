@@ -67,9 +67,9 @@ builds · `/health` answers · `/visits` counts up.
   go in the pull request**, with the reason for the difference.
 - What changed in the `transferring context` line when you added `.dockerignore`?
 
-> `examples/1-dockerfile/` and `examples/1a-cache/` demonstrate all of this with output shown.
-> `1a-cache` measures eight separate cache scenarios — two of them come out the opposite way round
-> to how most people guess.
+> [`catshop-examples`](https://github.com/kse-ci-cd-basics-course/catshop-examples) demonstrates all
+> of this with the output shown — `1-dockerfile/` and `1a-cache/`. That second one measures eight
+> separate cache scenarios, and two of them come out the opposite way round to how most people guess.
 
 ## Section 2 · multi-stage, and not root
 
