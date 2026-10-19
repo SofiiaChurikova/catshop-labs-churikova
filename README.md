@@ -75,16 +75,14 @@ for three things, and each is worth marks:
 - the **measurements** the assignment asked for — build times, image sizes, the error text
 - your **AI-tool disclosure**: which tool, what you asked, how you changed the output
 
-A pull request with an empty template section is sent back automatically, before anyone reads it.
+**Keep each answer to one or two lines.** These are read as evidence, not as an essay — the numbers
+and the one-line reason are what earn the marks, and padding does not. A pull request with an empty
+template section is sent back automatically, before anyone reads it.
 
-**5 · You review two classmates' pull requests**, against the same rubric. This is part of your mark,
-and it is a course objective in its own right — reading someone else's configuration and saying
-something useful about it is the job.
-
-**6 · You get a code review on the diff**, not a grade in a spreadsheet. Reply to the comments. One
+**5 · You get a code review on the diff**, not a grade in a spreadsheet. Reply to the comments. One
 resubmission is allowed within a week of the review.
 
-**7 · Merge it.** The folder is then frozen. A later lab never edits an earlier lab's folder, which
+**6 · Merge it.** The folder is then frozen. A later lab never edits an earlier lab's folder, which
 is why its checks keep passing for the rest of the course.
 
 ---

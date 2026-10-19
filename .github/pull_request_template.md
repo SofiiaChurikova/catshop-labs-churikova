@@ -1,34 +1,36 @@
 ## Which lab
 
-<!-- lab-01 … capstone -->
+<!-- lab-01 … -->
 
 ## What I did
 
-<!-- One short paragraph per section. What you wrote, not what the assignment said. -->
+<!-- One or two lines per section. What you wrote, not what the assignment said. -->
 
-## Alternatives I considered, and the price of what I chose
+## Alternatives, and the price of what I chose
 
-<!-- Required, and marked. Every task here has more than one valid answer and each has a
-     cost — build time, image size, maintenance, money, blast radius. Name the one you
-     rejected and say what the chosen one cost you. "It was the only way" is not an answer. -->
+<!-- One line per alternative:  considered X — rejected, because Y costs Z.
+     Every task here has more than one valid answer and each has a cost: build time,
+     image size, maintenance, money, blast radius. "It was the only way" is not an answer. -->
 
 ## The measurements
 
-<!-- The numbers the assignment asked for. Paste the real output, including the failures:
-     cold and warm build times, both image sizes, the error text you were asked to produce. -->
+<!-- The numbers the assignment asked for, pasted. No commentary needed — the figures
+     and the real error text are the evidence. Include the failures. -->
 
 ## Sources
 
-<!-- Documentation, blog posts, a classmate — naming it is fine and expected. Not naming it
-     is not. You must be able to explain every line you submit. -->
+<!-- Documentation, a blog post, a classmate — naming it is fine and expected.
+     Not naming it is not. You must be able to explain every line you submit. -->
 
 ## AI tools
 
-<!-- Required by the course policy. Which tool, what you asked it, and how you changed or
-     verified the output. "None" is a valid answer. Never paste secrets into one. -->
+<!-- One line: which tool, what you asked, how you checked or changed the output.
+     "None" is a valid answer. Never paste secrets into one. -->
 
 ---
 
 - [ ] the required sections are green
 - [ ] `.env` is not committed, and has never been committed
 - [ ] I can explain every line of this diff
+
+<!-- Answers are read as evidence, not as an essay. One or two lines each. -->
