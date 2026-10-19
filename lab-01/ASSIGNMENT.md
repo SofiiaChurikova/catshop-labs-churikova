@@ -42,98 +42,101 @@ python3 -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 COUNTER_FILE=./data/visits.txt ./.venv/bin/python app.py
 ```
 
-> **One contract the grader depends on: publish the app on host port `8080`.**
-> Sections 1 and 2 run your image directly; section 3 runs your `compose.yaml`. Both probe
-> `localhost:8080`.
+> **One contract: publish the app on host port `8080`.** Sections 1 and 2 run your image directly;
+> section 3 runs your `compose.yaml`. Both are probed at `localhost:8080`.
+
+## How you find out where you stand
+
+**Push.** Each section is a named check. Click one and you get a table: every individual check, pass
+or fail, with the reason. Push as often as you like — it costs nothing, and it is the same result
+your mark comes from.
+
+What follows says what each section has to **achieve**. It does not list the checks. You will meet
+some of them by failing them first, which is the point — the pipeline names the cause when you do.
 
 ---
 
-## Section 1 · a Dockerfile that runs
+## Section 1 · an image that runs
 
-Write `Dockerfile` and `.dockerignore`. Build the image, run it, reach it from your host.
+Write a `Dockerfile` and a `.dockerignore`. Build the image, run it, reach the app from your host.
 
-**Checked:** the base image is pinned (not `:latest`) · `requirements.txt` is copied *before* the
-source · there is a `CMD` or `ENTRYPOINT` · `.dockerignore` excludes `.env` and `.git` · the image
-builds · `/health` answers · `/visits` counts up.
-
-**In the pull request:**
-
-- **What does `EXPOSE` actually do?** Then run the container *without* `-p` and try to reach it.
-  Paste what happened.
-- **The cache, measured.** `time docker build` twice. Change one line of `app.py`. Build again.
-  Then swap your `COPY requirements.txt` and `COPY app.py` lines and repeat. **Both sets of timings
-  go in the pull request**, with the reason for the difference.
-- What changed in the `transferring context` line when you added `.dockerignore`?
-
-> [`catshop-examples`](https://github.com/kse-ci-cd-basics-course/catshop-examples) demonstrates all
-> of this with the output shown — `1-dockerfile/` and `1a-cache/`. That second one measures eight
-> separate cache scenarios, and two of them come out the opposite way round to how most people guess.
-
-## Section 2 · multi-stage, and not root
-
-Same application, built so that nothing the build needed ships to production.
-
-**Checked:** two or more `FROM` stages · a non-root `USER` that is not `root`/`0` · no C compiler in
-the runtime image · `apt-get update` never alone in its own layer · no `rm -rf /var/...` stranded in
-its own `RUN` · the running process is not uid 0.
+Build it twice, the second time after editing one line of `app.py`, and time both. Then change the
+order of your instructions and do it again.
 
 **In the pull request:**
 
-- **Both image sizes.** Build it single-stage and multi-stage and report both numbers.
-- **Prove the compiler is gone.** Ask both images for `gcc`. One answers; one cannot be asked.
-- **Find out what dropping root costs.** Try to make the app listen on port **80** as your non-root
-  user. Paste the error, and explain in one line why it listens on 8080 instead.
-- **Why chain `apt`/install commands with `&&`?** Not "fewer layers are smaller" — that is mostly a
-  myth. Give the two reasons that are actually true: what happens to a cleanup that sits in its own
-  `RUN`, and what happens when `apt-get update` is cached in a layer of its own while the `install`
-  line changes. Then the counter-pressure: why one giant `RUN` is also wrong.
+- **What does `EXPOSE` actually do?** Run the container *without* publishing a port and try to reach
+  it. Paste what happened.
+- **Both sets of build timings**, before and after you reordered — and the reason for the difference.
+- What changed in the `transferring context` line when you added `.dockerignore`, and why.
 
-## Section 3 · Compose, Postgres, and a volume
+## Section 2 · an image worth shipping
 
-`compose.yaml` with your app and a database. Move the counter into Postgres by setting
-`DATABASE_URL`. The database gets a `healthcheck`; the app gets
-`depends_on: { condition: service_healthy }`. **Do not publish the database port.**
-
-**Checked:** `compose.yaml` parses · a `volumes:` block exists · the database has a `healthcheck` ·
-`depends_on` is gated on `service_healthy` · the database port is not published · `/visits` reports
-`store=postgres` and counts up · **the rows survive `down` then `up`**.
+The image from section 1 works. It also **carries things production has no use for**, and the process
+inside it **has more power than it needs**. Fix both, without changing what the app does.
 
 **In the pull request:**
 
-- **The data-loss transcript.** Hit `/visits` twice, `docker compose down`, `up` again — once
-  *without* a named volume and once *with* one. **Paste both transcripts.** The first one must show
-  the counter going backwards.
-- What did plain `depends_on` do before you added the health gate? Try it, paste the log.
-- One paragraph: a named volume versus a bind mount, and when you would use each.
+- **Both image sizes**, before and after. Say which change bought which saving.
+- **Prove the thing you removed is gone.** Ask both images for it: one answers, one cannot.
+- **Paste the error** you hit when the less-privileged version tried to do something it no longer
+  could, and explain in one line why the app listens on 8080.
+- You will find advice online that chaining install commands with `&&` makes images smaller. That is
+  mostly a myth. **Give the two reasons it actually matters** — then the counter-pressure: why
+  putting everything in one enormous `RUN` is also wrong.
+
+## Section 3 · a stack that keeps its data
+
+Write a `compose.yaml` with your app and a PostgreSQL database, and move the counter out of the
+container's filesystem into the database.
+
+**Name the two services `app` and `db`** — the checks address them by name.
+
+**The checks start your stack with `docker compose up -d app`, and nothing else.** Whatever else has
+to be running by the time the app serves a request is your `compose.yaml`'s job to express.
+
+Three things must be true when you are done: the app answers, **the rows survive the containers being
+destroyed and recreated**, and **nothing on your laptop can connect to the database directly**.
+
+**In the pull request:**
+
+- **The data-loss transcript.** Get `/visits` counting, destroy the stack, bring it back — once in a
+  way that loses the rows, once in a way that keeps them. **Paste both.** The first must show the
+  counter going backwards.
+- Start the stack with nothing coordinating the app and the database, and **paste the log**. Then
+  make it wait properly. What was it waiting for before, and what is it waiting for now?
+- One paragraph: a named volume versus a bind mount, and when you would reach for each.
 
 ---
 
 ## Bonus — adds marks, never costs them
 
-Both bonus checks run with `continue-on-error`, so a red bonus job does not fail your pipeline.
+Bonus checks run with `continue-on-error`, so a red bonus job cannot fail your pipeline.
 
-**+ The partner API** (`section · wiremock`). Add the `partner` service — `wiremock/wiremock:3.6.0`,
-stubs already in `partner/mappings/` — and set `PARTNER_URL`, so `/price/MK-II` answers. Then show
-the two failure modes the real partner would never give you on demand: `/price/BOOM-1` and
-`/price/SLOW-1`. Paste both.
+**+ The API you do not own.** Add the partner service — `wiremock/wiremock:3.6.0`, stubs already in
+`partner/mappings/` — so `/price/MK-II` answers. Then produce the two failures the real partner would
+never give you on request, and paste both.
 
-**+ Closing the door** (`section · networks`). Put the database and the partner on `internal: true`
-networks. Show that **neither can reach the internet** while the app still reaches both. Then reach
-the database four ways and record all four with their real error text: `localhost:5432` · `db:5432`
-on the default bridge · the container's **IP address** · `db:5432` on a network you created. Restart
-the database after the IP attempt, and explain in two sentences why that attempt was wrong **even
-though it worked**.
+**+ Close the doors.** Reach the database from four different places and record all four with their
+real error text: from your laptop, by service name on the default bridge, by the container's IP
+address, and by service name on a network you created. **Restart the database between the third and
+fourth attempt.** Then explain in two sentences why the attempt that *worked* was still wrong.
 
-**+ Your own application** (+10). Do all three sections again against a service you wrote, in any
+Finish by making the database and the partner unable to reach the internet at all, while the app
+still reaches both. Show it.
+
+**+ Redis.** Add it as a fourth service, and use it for something real.
+
+**+ Your own application** (+10). All three sections again, against a service you wrote, in any
 language. It must expose `/health` and read its configuration from the environment.
 
 ---
 
 ## Before you open the pull request
 
-**Push.** The pipeline reports one check per section, and clicking a check shows you every
-individual check that passed or failed, and why. Push as often as you like — that is how you find
-out where you stand, and it is the same result the mark is taken from.
+Push, and read the checks. Then fill in the pull request template: **the alternatives, the
+measurements and the AI disclosure are each worth marks**, and no automated check can award them.
 
-Then fill in the pull request template. **The alternatives, the measurements and the AI disclosure
-are each worth marks**, and no automated check can award them.
+[`catshop-examples`](https://github.com/kse-ci-cd-basics-course/catshop-examples) has every mechanism
+in this lab demonstrated with its real output, one step per folder. Read it, run it, and diff the
+steps against each other.
