@@ -1,6 +1,7 @@
 # Lab 1 — containers and the image
 
-Three sections. The deadline is the one announced in the lecture.
+Three sections. **Due Thursday 12 November, 23:59 Kyiv.**
+After the deadline the maximum for this lab is 80%.
 
 ---
 
