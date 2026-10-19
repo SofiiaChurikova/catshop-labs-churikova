@@ -2,7 +2,7 @@
 
 **Covers:** syllabus assignments 1 and 2 · **12 points** · **three sections**
 **Opens:** Thursday 22 October · **Due:** Thursday 12 November
-*Lab 2 opens 29 October while this one is still open. That is slack, not three weeks of work.*
+*Lab 2 (test, build, publish) opens 29 October while this one is still open. That is slack, not three weeks of work.*
 
 ---
 

@@ -4,19 +4,27 @@ One repository. One folder per lab. Seven labs and the capstone all land here, s
 repo *is* your portfolio: a commit history that shows an application going from a laptop to
 production.
 
-```
-lab-01/   containers and the image        ← open now
-lab-02/   a local environment
-lab-03/   your first pipeline
-lab-04/   reuse, caching, OIDC
-lab-05/   two deployment formats
-lab-06/   the cluster
-lab-07/   configuration, secrets, releases
-capstone/ ship it to production
-```
+| Folder | What it is | Announced | Due |
+|---|---|---|---|
+| `lab-01/` | containers and the image | **22 Oct** | **12 Nov** |
+| `lab-02/` | test, build, publish | 29 Oct | 19 Nov |
+| `lab-03/` | a pipeline that does not repeat itself | 5 Nov | 26 Nov |
+| `lab-04/` | Terraform, and the first environment | 12 Nov | 3 Dec |
+| `lab-05/` | many environments, no secrets in Git | 19 Nov | 10 Dec |
+| `lab-06/` | into the cluster | 26 Nov | 17 Dec |
+| `lab-07/` | release without downtime | 3 Dec | 20 Dec |
+| `capstone/` | ship it to production | 26 Nov | 20 Dec |
 
 Each folder arrives with the application and its fixtures already in it. What is **missing** from a
 lab folder is the work: that is what you write.
+
+**The labs overlap on purpose.** Lab 1 is still open when lab 2 opens. Three weeks is slack for when
+a week goes badly — it is not three weeks of expected work, and the content is serial, so putting
+one off blocks the next.
+
+**From lab 4 you need your own AWS account.** Open it early: the free tier is a **12-month clock**
+from the day you create the account, and lab 4's load balancer is only free inside it. Labs 1 to 3
+need no cloud account at all.
 
 ---
 
