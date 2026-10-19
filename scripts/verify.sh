@@ -27,4 +27,4 @@ else
     || { echo "could not fetch $REPO at $REF — is the tag published, and can you read the repo?" >&2; exit 1; }
 fi
 
-exec bash "$CACHE/verify/verify.sh" "$@"
+exec bash "$CACHE/lab-01/verify/verify.sh" "$@"

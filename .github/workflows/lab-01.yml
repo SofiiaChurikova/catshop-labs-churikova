@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }   # the .env history check needs real history
-      - uses: kse-ci-cd-basics-course/catshop-grader/verify@v1
+      - uses: kse-ci-cd-basics-course/catshop-grader/lab-01@v1
         with:
           section: dockerfile
           path: lab-01
@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: kse-ci-cd-basics-course/catshop-grader/verify@v1
+      - uses: kse-ci-cd-basics-course/catshop-grader/lab-01@v1
         with:
           section: hardening
           path: lab-01
@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: kse-ci-cd-basics-course/catshop-grader/verify@v1
+      - uses: kse-ci-cd-basics-course/catshop-grader/lab-01@v1
         with:
           section: compose
           path: lab-01
@@ -54,7 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: kse-ci-cd-basics-course/catshop-grader/verify@v1
+      - uses: kse-ci-cd-basics-course/catshop-grader/lab-01@v1
         with:
           section: wiremock
           path: lab-01
@@ -66,7 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: kse-ci-cd-basics-course/catshop-grader/verify@v1
+      - uses: kse-ci-cd-basics-course/catshop-grader/lab-01@v1
         with:
           section: networks
           path: lab-01
