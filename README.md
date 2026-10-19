@@ -28,9 +28,9 @@ not extra work. The content is serial, so putting one off blocks the next.
 
 **1 · Make your own copy.** Click **Use this template → Create a new repository** on
 [catshop-labs](https://github.com/kse-ci-cd-basics-course/catshop-labs). Name it whatever you like.
-Keep it public, or add the instructor if you make it private.
+Keep it public, or add me as a collaborator if you make it private.
 
-**2 · Send the instructor the URL.** Once. Every lab after this is a pull request in that same repo.
+**2 · Send me the URL.** Once, at the start. Every lab after this is a pull request in that same repo.
 
 **3 · Add this repository as `upstream`**, so you can pull each new lab folder when it opens:
 
@@ -79,10 +79,16 @@ for three things, and each is worth marks:
 and the one-line reason are what earn the marks, and padding does not. A pull request with an empty
 template section is sent back automatically, before anyone reads it.
 
-**5 · You get a code review on the diff**, not a grade in a spreadsheet. Reply to the comments. One
-resubmission is allowed within a week of the review.
+**5 · Hand it in.** Open a submission issue in
+[catshop-submissions](https://github.com/kse-ci-cd-basics-course/catshop-submissions/issues/new/choose)
+with the pull request URL. **Opening that issue is what submits the lab, and its timestamp is your
+submission time** — I do not watch your repository, so a pull request nobody told me about is not a
+submission.
 
-**6 · Merge it.** The folder is then frozen. A later lab never edits an earlier lab's folder, which
+**6 · I review the diff**, not a grade in a spreadsheet. Reply to the comments. One resubmission is
+allowed within a week of the review.
+
+**7 · Merge it.** The folder is then frozen. A later lab never edits an earlier lab's folder, which
 is why its checks keep passing for the rest of the course.
 
 ---

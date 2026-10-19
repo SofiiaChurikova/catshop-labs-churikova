@@ -133,10 +133,16 @@ language. It must expose `/health` and read its configuration from the environme
 
 ---
 
-## Before you open the pull request
+## Handing it in
 
-Push, and read the checks. Then fill in the pull request template: **the alternatives, the
+Push, and read the checks. Then fill in the pull request template — **the alternatives, the
 measurements and the AI disclosure are each worth marks**, and no automated check can award them.
+Keep each answer to one or two lines.
+
+Then **open a submission issue** in
+[catshop-submissions](https://github.com/kse-ci-cd-basics-course/catshop-submissions/issues/new/choose)
+with the pull request URL. That issue is what hands the lab in, and its timestamp is your submission
+time. A pull request nobody told me about is not a submission.
 
 [`catshop-examples`](https://github.com/kse-ci-cd-basics-course/catshop-examples) has every mechanism
 in this lab demonstrated with its real output, one step per folder. Read it, run it, and diff the
