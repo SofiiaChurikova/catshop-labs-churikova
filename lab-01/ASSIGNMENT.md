@@ -1,8 +1,6 @@
 # Lab 1 — containers and the image
 
-**Covers:** syllabus assignments 1 and 2 · **12 points** · **three sections**
-**Opens:** Thursday 22 October · **Due:** Thursday 12 November
-*Lab 2 (test, build, publish) opens 29 October while this one is still open. That is slack, not three weeks of work.*
+Three sections. The deadline is the one announced in the lecture.
 
 ---
 
@@ -133,13 +131,9 @@ language. It must expose `/health` and read its configuration from the environme
 
 ## Before you open the pull request
 
-```bash
-./scripts/verify.sh --section dockerfile --path lab-01
-./scripts/verify.sh --section hardening  --path lab-01
-./scripts/verify.sh --section compose    --path lab-01
-```
-
-Or just push — the pipeline runs the same checks and reports one per section.
+**Push.** The pipeline reports one check per section, and clicking a check shows you every
+individual check that passed or failed, and why. Push as often as you like — that is how you find
+out where you stand, and it is the same result the mark is taken from.
 
 Then fill in the pull request template. **The alternatives, the measurements and the AI disclosure
-are each worth marks**, and the automated checks cannot award them.
+are each worth marks**, and no automated check can award them.
