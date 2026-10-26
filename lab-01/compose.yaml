@@ -7,8 +7,12 @@ services:
       - "8080:8080"
     environment:
       DATABASE_URL: postgresql://catshop:${POSTGRES_PASSWORD}@db:5432/catshop
+      PARTNER_URL: http://partner:8080
+      PARTNER_TIMEOUT: "2"
     depends_on:
       db:
+        condition: service_healthy
+      partner:
         condition: service_healthy
 
   db:
@@ -26,6 +30,12 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+
+  partner:
+    image: wiremock/wiremock:3.6.0
+    command: ["--disable-banner"]
+    volumes:
+      - ./partner/mappings:/home/wiremock/mappings:ro
 
 volumes:
   pgdata:
