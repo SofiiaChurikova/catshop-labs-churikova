@@ -1,0 +1,31 @@
+name: catshop
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://catshop:${POSTGRES_PASSWORD}@db:5432/catshop
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: catshop
+      POSTGRES_USER: catshop
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U catshop -d catshop"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  pgdata:
