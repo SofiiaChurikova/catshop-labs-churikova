@@ -14,6 +14,7 @@ services:
         condition: service_healthy
       partner:
         condition: service_healthy
+    networks: [frontend, backend, partnernet]
 
   db:
     image: postgres:16.4-alpine
@@ -30,12 +31,21 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+    networks: [backend]
 
   partner:
     image: wiremock/wiremock:3.6.0
     command: ["--disable-banner"]
     volumes:
       - ./partner/mappings:/home/wiremock/mappings:ro
+    networks: [partnernet]
 
 volumes:
   pgdata:
+
+networks:
+  frontend:
+  backend:
+    internal: true
+  partnernet:
+    internal: true
