@@ -58,6 +58,7 @@ jobs:
         with:
           section: wiremock
           path: lab-01
+          bonus: "true"
 
   section-networks:
     name: "section · networks (bonus)"
@@ -70,3 +71,4 @@ jobs:
         with:
           section: networks
           path: lab-01
+          bonus: "true"

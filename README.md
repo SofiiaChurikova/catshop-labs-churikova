@@ -9,8 +9,8 @@ already in it — what is **missing** from a lab folder is the work, and that is
 | Folder | What it is | Due |
 |---|---|---|
 | `lab-01/` | containers and the image | **Thu 12 Nov** |
-| `lab-02/` | test, build, publish | Thu 19 Nov |
-| `lab-03/` | a pipeline that does not repeat itself | Thu 26 Nov |
+| `lab-02/` | test, build, publish | **Thu 19 Nov** |
+| `lab-03/` | a pipeline that does not repeat itself | **Wed 2 Dec** |
 | `lab-04/` | infrastructure as code, and a load balancer | Thu 3 Dec |
 | `lab-05/` | three environments, no secrets in Git | Thu 10 Dec |
 | `lab-06/` | observability | Thu 17 Dec |
