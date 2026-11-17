@@ -1,0 +1,12 @@
+.git
+.env
+.venv/
+__pycache__/
+*.pyc
+data/
+Dockerfile*
+.dockerignore
+compose.yaml
+ASSIGNMENT.md
+partner/
+init-db/
