@@ -1,0 +1,1 @@
+ghcr.io/sofiiachurikova/catshop-lab-03@sha256:8f4ed2ca2704576c137b1a23e26afadbf328e1b25f1323b473fa4e3791202364
