@@ -1,0 +1,46 @@
+name: lab-03 publish
+
+on:
+  push:
+    paths:
+      - "lab-03/**"
+      - ".github/workflows/lab-03-publish.yml"
+      - ".github/workflows/_build-and-test.yml"
+      - ".github/workflows/_qa.yml"
+      - ".github/actions/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build-and-test.yml
+    with:
+      lab: lab-03
+      name: catshop-lab-03
+      publish: true
+
+  qa:
+    needs: build
+    uses: ./.github/workflows/_qa.yml
+    with:
+      lab: lab-03
+      image: ${{ needs.build.outputs.ref }}
+
+  promote:
+    needs: [build, qa]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: write published.txt
+        run: echo "${{ needs.build.outputs.ref }}" | tee published.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: published
+          path: published.txt

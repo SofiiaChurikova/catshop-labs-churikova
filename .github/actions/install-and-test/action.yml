@@ -1,0 +1,28 @@
+name: install and test
+description: install the lab's dependencies and run its pytest suite
+
+inputs:
+  working-directory:
+    description: the lab folder with requirements*.txt and tests/
+    required: true
+  python-version:
+    description: which python to install
+    required: false
+    default: "3.12"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: install
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: pip install -r requirements.txt -r requirements-dev.txt
+
+    - name: test
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: python -m pytest -q

@@ -1,0 +1,81 @@
+name: _build-and-test
+
+on:
+  workflow_call:
+    inputs:
+      lab:
+        description: the lab folder with the app, its tests and the Dockerfile
+        type: string
+        required: true
+      name:
+        description: the image name on ghcr.io, without the owner and the tag
+        type: string
+        required: true
+      publish:
+        description: push the image, or only build it
+        type: boolean
+        default: false
+    outputs:
+      digest:
+        description: the digest of the image that was built
+        value: ${{ jobs.image.outputs.digest }}
+      ref:
+        description: image@digest, ready to pull
+        value: ${{ jobs.image.outputs.image }}@${{ jobs.image.outputs.digest }}
+    secrets:
+      registry-token:
+        description: a token for ghcr.io, GITHUB_TOKEN is used if it is not passed
+        required: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles(format('{0}/requirements*.txt', inputs.lab)) }}
+          restore-keys: pip-${{ runner.os }}-
+
+      - uses: ./.github/actions/install-and-test
+        with:
+          working-directory: ${{ inputs.lab }}
+
+  image:
+    needs: test
+    runs-on: ubuntu-24.04
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+      digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - id: meta
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ inputs.name }}" >> "$GITHUB_OUTPUT"
+
+      - if: inputs.publish
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.registry-token || secrets.GITHUB_TOKEN }}
+
+      - id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.lab }}
+          push: ${{ inputs.publish }}
+          tags: ${{ steps.meta.outputs.image }}:${{ github.sha }}
+          labels: org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=${{ inputs.lab }}
+          cache-to: type=gha,scope=${{ inputs.lab }},mode=max
+
+      - if: inputs.publish
+        run: echo "pushed ${{ steps.meta.outputs.image }}@${{ steps.build.outputs.digest }}" >> "$GITHUB_STEP_SUMMARY"
