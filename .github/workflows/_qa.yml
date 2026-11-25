@@ -1,0 +1,59 @@
+name: _qa
+
+on:
+  workflow_call:
+    inputs:
+      lab:
+        description: the lab folder with qa/
+        type: string
+        required: true
+      image:
+        description: the image to test, as name@sha256:digest
+        type: string
+        required: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [none, partner]
+    env:
+      QA_IMAGE: ${{ inputs.image }}
+      QA_PROFILE: ${{ matrix.profile }}
+      COMPOSE_PROFILES: ${{ matrix.profile }}
+      QA_BASE_URL: http://localhost:8080
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r ${{ inputs.lab }}/requirements-dev.txt
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pull the digest
+        run: docker pull -q "$QA_IMAGE"
+
+      - name: stack up
+        run: docker compose -f ${{ inputs.lab }}/qa/compose.qa.yaml up -d --wait
+
+      - name: suite
+        run: python -m pytest ${{ inputs.lab }}/qa -q --junitxml=qa-report.xml
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report-${{ matrix.profile }}
+          path: qa-report.xml
+
+      - name: stack down
+        if: always()
+        run: docker compose -f ${{ inputs.lab }}/qa/compose.qa.yaml down -v
