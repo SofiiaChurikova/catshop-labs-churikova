@@ -1,4 +1,4 @@
-name: unit tests
+name: install and test
 description: install the lab's dependencies and run its pytest suite
 
 inputs:

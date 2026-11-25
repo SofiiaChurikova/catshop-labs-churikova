@@ -22,6 +22,14 @@ on:
       ref:
         description: image@digest, ready to pull
         value: ${{ jobs.image.outputs.image }}@${{ jobs.image.outputs.digest }}
+    secrets:
+      registry-token:
+        description: a token for ghcr.io, GITHUB_TOKEN is used if it is not passed
+        required: false
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   test:
@@ -29,13 +37,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/pip
-          key: pip-${{ runner.os }}-${{ hashFiles('requirements*.txt') }}
+          key: pip-${{ runner.os }}-${{ hashFiles(format('{0}/requirements*.txt', inputs.lab)) }}
           restore-keys: pip-${{ runner.os }}-
 
-      - uses: ./.github/actions/unit-tests
+      - uses: ./.github/actions/install-and-test
         with:
           working-directory: ${{ inputs.lab }}
 
@@ -57,7 +65,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.registry-token || secrets.GITHUB_TOKEN }}
 
       - id: build
         uses: docker/build-push-action@v6
