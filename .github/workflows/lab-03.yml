@@ -26,7 +26,7 @@ jobs:
   # ── required ───────────────────────────────────────────────────────────────
   section-reuse:
     name: "section · reuse"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }   # the .env history check needs real history
@@ -37,7 +37,7 @@ jobs:
 
   section-cache:
     name: "section · cache"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
@@ -51,7 +51,7 @@ jobs:
   # digest, stand the given stack up, drive it with the given suite.
   section-qa:
     name: "section · qa (bonus)"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -64,7 +64,7 @@ jobs:
 
   section-aqa:
     name: "section · aqa (bonus)"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -77,7 +77,7 @@ jobs:
 
   section-concurrency:
     name: "section · concurrency (bonus)"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
